@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 
 <html lang="ru">
 <head>
@@ -50,7 +49,6 @@
             margin-top: 20px;
         }
     </style>
-</head>
 <body>
     <header>
         <h1>Павел Сабиров</h1>
@@ -177,4 +175,4 @@
         <p>© 2024 Павел Сабиров | Все права защищены</p>
     </footer>
 </body>
-</html>
+
