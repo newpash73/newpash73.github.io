@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Резюме Павла Сабирова</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            padding: 50px;
+            background-color: #E1C699;
+            color: #333;
+        }
+
+        .settings.show {
+            display: flex;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+        }
+
+        .settings ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 36px; /* Увеличенный размер шрифта */
+        }
+
+        .settings ul li a:hover {
+            background-color: yellow;
+            color: #27ae60;
+        }
+
+        .settings ul li a .icon {
+            margin-right: 10px; /* Отступ иконки от текста */
+            font-size: 36px; /* Размер иконки */
+        }
+
+        header ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        header ul li {
+            margin-bottom: 10px;
+        }
+
+        header ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 15px 10px;
+            display: flex;
+            align-items: center;
+            font-size: 24px; /* Увеличенный размер шрифта кнопок */
+        }
+
+        header ul li a .icon {
+            margin-right: 10px; /* Отступ иконки от текста */
+            font-size: 24px; /* Размер иконки */
+        }
+
+        header ul li a:hover {
+            background-color: #f1f1f1;
+            color: #27ae60;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <ul>
+            <li><a href="#personalCabinet"><span class="icon">&#128100;</span>Личный кабинет</a></li>
+            <li><a href="#ads"><span class="icon">&#128279;</span>Реклама</a></li>
+            <li><a href="#promotions"><span class="icon">&#127873;</span>Акции</a></li>
+            <li><a href="#contacts"><span class="icon">&#9993;</span>Контакты</a></li>
+            <li><a href="#languages"><span class="icon">&#127760;</span>Языки</a></li>
+            <li><a href="#aboutSite"><span class="icon">&#8505;</span>О сайте</a></li>
+        </ul>
+    </header>
+
+    <section>
+        <!-- Контент страницы -->
+    </section>
+
+    <footer>
+        <p>© 2024 Павел Сабиров | Все права защищены</p>
+    </footer>
+
+    <script>
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsBlock = document.getElementById('settingsBlock');
+
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', function() {
+                settingsBlock.classList.toggle('show');
+            });
+        }
+    </script>
+</body>
+</html>
