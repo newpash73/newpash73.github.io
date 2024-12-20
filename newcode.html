@@ -581,6 +581,55 @@
     </div>
 
 <script>
+
+    // Настройки слайдера
+    const slides = document.getElementById('slides');
+    const dots = document.querySelectorAll('.dot');
+
+    let currentSlideIndex = 0; // Номер текущего слайда
+    const totalSlides = document.querySelectorAll('.slides img').length; // Количество слайдов
+
+    // Функция для перехода к конкретному слайду
+    function goToSlide(index) {
+        if (index >= totalSlides) {
+            currentSlideIndex = 0; // Если индекс больше количества слайдов, возвращаемся к первому
+        } else if (index < 0) {
+            currentSlideIndex = totalSlides - 1; // Если индекс меньше нуля, переходим к последнему слайду
+        } else {
+            currentSlideIndex = index; // Устанавливаем текущий индекс
+        }
+
+        const offset = -currentSlideIndex * 1200; // Сдвиг слайда (1200 — ширина одного слайда)
+        slides.style.transform = `translateX(${offset}px)`; // Двигаем слайдер
+        updateDots(); // Обновляем активную точку
+    }
+
+    // Функция для обновления активной точки
+    function updateDots() {
+        dots.forEach(dot => dot.classList.remove('active')); // Убираем активный класс у всех точек
+        dots[currentSlideIndex].classList.add('active'); // Добавляем активный класс текущей точке
+    }
+
+    // Обработчик для кликов по точкам
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            goToSlide(index); // При клике на точку переходим к соответствующему слайду
+        });
+    });
+
+    // Автопрокрутка слайдера
+    function startAutoSlide() {
+        setInterval(() => {
+            goToSlide(currentSlideIndex + 1); // Переход к следующему слайду
+        }, 3000); // Смена слайда каждые 3 секунды
+    }
+
+    // Запуск автопрокрутки при загрузке страницы
+    startAutoSlide();
+
+    // Вызываем начальный переход на первый слайд
+    goToSlide(0);
+
     // Переменные для настроек
     const settingsBtn = document.getElementById('settingsBtn');
     const settingsBlock = document.getElementById('settingsBlock');
