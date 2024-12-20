@@ -291,6 +291,36 @@
         background: rgba(0, 0, 0, 0.5);
         z-index: 999;
     }
+        .menu-icon {
+            font-size: 36px; /* Увеличение размера иконки */
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .menu-icon:hover {
+            color: #27ae60;
+        }
+
+        .settings.show {
+            display: flex;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+        }
+
+        .settings ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            display: block;
+            margin: 5px 0;
+            font-size: 32px;
+        }
+
+        .settings ul li a:hover {
+            background-color: #f1f1f1;
+            color: #27ae60;
+        }
 
     .popup {
         display: none;
@@ -489,7 +519,10 @@
             <img src="Google.png" alt="Лого">
             <span></span>
         </div>
-        <a href="#" id="settingsBtn" class="menu-icon">&#9776;</a> <!-- Иконка гамбургер-меню -->
+
+    <!-- Иконка гамбургер-меню -->
+    <a href="#" id="settingsBtn" class="menu-icon">&#9776;</a> 
+     
     </div>
     <div class="right">
         <a href="#" id="loginBtn" class="btn-blue">Войти</a>
@@ -541,12 +574,6 @@
     <!-- Блок с настройками -->
     <div class="settings" id="settingsBlock">
         <h2>Настройки</h2>
-        <p>Личный кабинет</p>
-        <p>Реклама</p>
-        <p>Акции</p>
-        <p>Контакты</p>
-        <p>Языки</p>
-        <p>О сайте</p>
     </div>
 
     <!-- Слайдер с изображениями -->
@@ -643,8 +670,11 @@
     goToSlide(0);
 
     // Переменные для настроек
-    const settingsBtn = document.getElementById('settingsBtn');
-    const settingsBlock = document.getElementById('settingsBlock');
+        const settingsBtn = document.getElementById('settingsBtn');
+        settingsBtn.addEventListener('click', function(event) {
+            event.preventDefault(); // Отключаем стандартное поведение ссылки
+            window.open('settingburger.html','_self'); // Переход на новую страницу
+        });
 
 // Переменные для окна входа
 const loginBtn = document.getElementById('loginBtn');
