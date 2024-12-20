@@ -403,6 +403,68 @@
     background-color: #c0392b; /* Более насыщенный красный */
 }
 
+        /* Всплывающее окно для заявки */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .popup h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .popup input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .popup button {
+            width: 100%;
+            padding: 10px;
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #2ecc71;
+        }
+
+        #closePopup {
+            background-color: red;
+            margin-top: 10px;
+        }
+
+        #closePopup:hover {
+            background-color: darkred;
+        }
+
     </style>
 </head>
 <body>
@@ -419,7 +481,7 @@
     <div class="right">
         <a href="#" id="loginBtn" class="btn-blue">Войти</a>
         <a href="#" id="openRegistrationPopup" class="btn-blue">Регистрация</a>
-        <button>Заявка</button>
+         <button id="applicationButton">Заявка</button>
      </div>
     </header>
 
@@ -449,6 +511,19 @@
     </form>
     <button id="closePopupRegister">Закрыть</button>
 </div>
+
+    <!-- Всплывающее окно для заявки -->
+    <div class="overlay" id="applicationOverlay"></div>
+    <div class="popup" id="applicationPopup">
+        <h2>Войдите в свой аккаунт</h2>
+        <form>
+            <input type="text" placeholder="Логин" required>
+            <input type="password" placeholder="Пароль" required>
+            <button type="submit">Подтвердить</button>
+        </form>
+        <button id="closeApplicationPopup">Закрыть</button>
+    </div>
+
 
     <!-- Блок с настройками -->
     <div class="settings" id="settingsBlock">
@@ -560,10 +635,35 @@ overlayRegister.addEventListener('click', () => {
     overlayRegister.style.display = 'none';
 });
 
+        // Элементы всплывающего окна для заявки
+        const applicationButton = document.getElementById('applicationButton');
+        const applicationPopup = document.getElementById('applicationPopup');
+        const applicationOverlay = document.getElementById('applicationOverlay');
+        const closeApplicationPopup = document.getElementById('closeApplicationPopup');
+
+        // Открыть всплывающее окно
+        applicationButton.addEventListener('click', () => {
+            applicationPopup.style.display = 'block';
+            applicationOverlay.style.display = 'block';
+        });
+
+        // Закрыть всплывающее окно по кнопке
+        closeApplicationPopup.addEventListener('click', () => {
+            applicationPopup.style.display = 'none';
+            applicationOverlay.style.display = 'none';
+        });
+
+        // Закрыть всплывающее окно по клику на затемненную область
+        applicationOverlay.addEventListener('click', () => {
+            applicationPopup.style.display = 'none';
+            applicationOverlay.style.display = 'none';
+        });
+
 </script>
+
     <footer>
         <p>© 2024 Павел Сабиров | Все права защищены</p>
     </footer>
+
 </body>
 </html>
-
