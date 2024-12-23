@@ -496,6 +496,33 @@
             background-color: darkred;
         }
 
+    <!-- Категории -->
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100px;
+}
+
+.category-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.category-title {
+    font-size: 16px;
+    color: #333;
+}
+
+
         p {
             line-height: 1.6;
         }
@@ -601,6 +628,11 @@
             <option>Транспорт</option>
             <option>Недвижимость</option>
             <option>Работа</option>
+            <option>Услуги</option>
+            <option>Животные</option>
+            <option>Дом и сад</option>
+            <option>Спорт и хобби</option>
+
         </select>
    
         <input type="text" placeholder="Введите описание...">
@@ -608,17 +640,48 @@
     </div>
 
     <!-- Категории -->
-    <div class="categories">
-        <div class="category"><span class="category-title">Транспорт</span></div>
-        <div class="category"><span class="category-title">Недвижимость</span></div>
-        <div class="category"><span class="category-title">Услуги</span></div>
-        <div class="category"><span class="category-title">Дом и сад</span></div>
-        <div class="category"><span class="category-title">Работа</span></div>
-        <div class="category"><span class="category-title">Личные вещи</span></div>
-        <div class="category"><span class="category-title">Спорт и хобби</span></div>
-        <div class="category"><span class="category-title">Животные</span></div>
+ <div class="categories">
+    <div class="category">
+        <img src="Cukur.jpg" alt="Транспорт" width="50" height="30" class="category-icon">
+        <span class="category-title">Транспорт</span>
     </div>
 
+    <div class="category">
+        <img src="Cukur.jpg" alt="Недвижимость" width="50" height="30" class="category-icon">
+        <span class="category-title">Недвижимость</span>
+    </div>
+
+    <div class="category">
+        <img src="Cukur.jpg" alt="Услуги" width="50" height="30" class="category-icon">
+        <span class="category-title">Услуги</span>
+    </div>
+
+    <div class="category">
+        <img src="Cukur.jpg" alt="Дом и сад" width="50" height="30" class="category-icon">
+        <span class="category-title">Дом и сад</span>
+    </div>
+
+    <div class="category">
+        <img src="Cukur.jpg" alt="Работа" width="50" height="30" class="category-icon">
+        <span class="category-title">Работа</span>
+    </div>
+
+    <div class="category">
+        <img src="Cukur.jpg" alt="Личные вещи" width="50" height="30" class="category-icon">
+        <span class="category-title">Личные вещи</span>
+    </div>
+
+    <div class="category">
+        <img src="Cukur.jpg" alt="Спорт и хобби" width="50" height="30" class="category-icon">
+        <span class="category-title">Спорт и хобби</span>
+    </div>
+
+    <div class="category">
+        <img src="Cukur.jpg" alt="Животные" width="50" height="30" class="category-icon">
+        <span class="category-title">Животные</span>
+    </div>
+
+</div>
 <script>
 
     // Настройки слайдера
