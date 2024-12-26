@@ -640,49 +640,50 @@
         <button>Поиск</button>
     </div>
 
-    <!-- Категории -->
- <div class="categories">
-    <div class="category">
-        <img src="Cukur.jpg" alt="Транспорт" width="50" height="30" class="category-icon">
-        <span class="category-title">Транспорт</span>
-    </div>
+<!-- Категории -->
+<div class="categories">
+  <div class="category" data-target="transport.html">
+    <img src="Cukur.jpg" alt="Транспорт" width="50" height="30" class="category-icon">
+    <span class="category-title">Транспорт</span>
+  </div>
 
-    <div class="category">
-        <img src="Cukur.jpg" alt="Недвижимость" width="50" height="30" class="category-icon">
-        <span class="category-title">Недвижимость</span>
-    </div>
 
-    <div class="category">
-        <img src="Cukur.jpg" alt="Услуги" width="50" height="30" class="category-icon">
-        <span class="category-title">Услуги</span>
-    </div>
+  <div class="category" data-target="real-estate.html">
+    <img src="Cukur.jpg" alt="Недвижимость" width="50" height="30" class="category-icon">
+    <span class="category-title">Недвижимость</span>
+  </div>
 
-    <div class="category">
-        <img src="Cukur.jpg" alt="Дом и сад" width="50" height="30" class="category-icon">
-        <span class="category-title">Дом и сад</span>
-    </div>
+  <div class="category" data-target="services.html">
+    <img src="Cukur.jpg" alt="Услуги" width="50" height="30" class="category-icon">
+    <span class="category-title">Услуги</span>
+  </div>
 
-    <div class="category">
-        <img src="Cukur.jpg" alt="Работа" width="50" height="30" class="category-icon">
-        <span class="category-title">Работа</span>
-    </div>
+  <div class="category" data-target="home-and-garden.html">
+    <img src="Cukur.jpg" alt="Дом и сад" width="50" height="30" class="category-icon">
+    <span class="category-title">Дом и сад</span>
+  </div>
 
-    <div class="category">
-        <img src="Cukur.jpg" alt="Личные вещи" width="50" height="30" class="category-icon">
-        <span class="category-title">Личные вещи</span>
-    </div>
+  <div class="category" data-target="jobs.html">
+    <img src="Cukur.jpg" alt="Работа" width="50" height="30" class="category-icon">
+    <span class="category-title">Работа</span>
+  </div>
 
-    <div class="category">
-        <img src="Cukur.jpg" alt="Спорт и хобби" width="50" height="30" class="category-icon">
-        <span class="category-title">Спорт и хобби</span>
-    </div>
+  <div class="category" data-target="personal-items.html">
+    <img src="Cukur.jpg" alt="Личные вещи" width="50" height="30" class="category-icon">
+    <span class="category-title">Личные вещи</span>
+  </div>
 
-    <div class="category">
-        <img src="Cukur.jpg" alt="Животные" width="50" height="30" class="category-icon">
-        <span class="category-title">Животные</span>
-    </div>
+  <div class="category" data-target="sports-and-hobbies.html">
+    <img src="Cukur.jpg" alt="Спорт и хобби" width="50" height="30" class="category-icon">
+    <span class="category-title">Спорт и хобби</span>
+  </div>
 
+  <div class="category" data-target="animals.html">
+    <img src="Cukur.jpg" alt="Животные" width="50" height="30" class="category-icon">
+    <span class="category-title">Животные</span>
+  </div>
 </div>
+
 <script>
 
     // Настройки слайдера
@@ -815,6 +816,56 @@ overlayRegister.addEventListener('click', () => {
             applicationOverlay.style.display = 'none';
         });
 
+  // Получаем все элементы категорий
+  const categories = document.querySelectorAll('.category');
+
+// Для категории "Транспорт"
+const transportCategory = document.querySelector('.category[data-target="transport.html"]');
+transportCategory.addEventListener('click', function() {
+  window.open('transport.html', '_self'); // Переход на transport.html
+});
+
+// Для категории "Недвижимость"
+const realEstateCategory = document.querySelector('.category[data-target="real-estate.html"]');
+realEstateCategory.addEventListener('click', function() {
+  window.open('real-estate.html', '_self'); // Переход на real-estate.html
+});
+
+// Для категории "Услуги"
+const servicesCategory = document.querySelector('.category[data-target="services.html"]');
+servicesCategory.addEventListener('click', function() {
+  window.open('services.html', '_self'); // Переход на services.html
+});
+
+// Для категории "Дом и сад"
+const homeAndGardenCategory = document.querySelector('.category[data-target="home-and-garden.html"]');
+homeAndGardenCategory.addEventListener('click', function() {
+  window.open('home-and-garden.html', '_self'); // Переход на home-and-garden.html
+});
+
+// Для категории "Работа"
+const jobsCategory = document.querySelector('.category[data-target="jobs.html"]');
+jobsCategory.addEventListener('click', function() {
+  window.open('jobs.html', '_self'); // Переход на jobs.html
+});
+
+// Для категории "Личные вещи"
+const personalItemsCategory = document.querySelector('.category[data-target="personal-items.html"]');
+personalItemsCategory.addEventListener('click', function() {
+  window.open('personal-items.html', '_self'); // Переход на personal-items.html
+});
+
+// Для категории "Спорт и хобби"
+const sportsAndHobbiesCategory = document.querySelector('.category[data-target="sports-and-hobbies.html"]');
+sportsAndHobbiesCategory.addEventListener('click', function() {
+  window.open('sports-and-hobbies.html', '_self'); // Переход на sports-and-hobbies.html
+});
+
+// Для категории "Животные"
+const animalsCategory = document.querySelector('.category[data-target="animals.html"]');
+animalsCategory.addEventListener('click', function() {
+  window.open('animals.html', '_self'); // Переход на animals.html
+});
 </script>
 
     <footer>
