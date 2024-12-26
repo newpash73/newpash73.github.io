@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Слайдер без обратного хода</title>
+    <style>
+        /* Общие стили */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #b0e0e6;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Верхнее меню */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #40E0D0;
+            border-bottom: 2px solid #eee;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header .left, header .right {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            width: 60px;
+            height: 30px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #333;
+            margin-right: 20px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        header a:hover {
+            color: #27ae60;
+        }
+
+        header button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        header button:hover {
+            background-color: #c0392b;
+        }
+
+        /* Слайдер */
+        .slider {
+            position: relative;
+            width: 1200px;
+            height: 500px;
+            margin: 40px auto;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slides img {
+            width: 1200px;
+            height: 500px;
+            flex-shrink: 0;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        /* Навигационные точки */
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .dot {
+            width: 15px;
+            height: 15px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot:hover {
+            background-color: #2ecc71;
+        }
+
+        .dot.active {
+            background-color: #27ae60;
+        }
+
+        /* Поисковая строка */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 40px;
+            background-color: #FF8C00;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar select, .search-bar input, .search-bar button {
+            padding: 12px 18px;
+            margin: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+
+        .search-bar select, .search-bar input {
+            flex: 1;
+            width: 250px;
+        }
+
+        .search-bar button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #2ecc71;
+        }
+
+        /* Категории */
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 30px;
+            background-color: yellow;
+        }
+
+        .category {
+            flex: 1 1 180px;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .category:hover .category-title {
+            color: #27ae60;
+        }
+
+        .category .category-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Блок с настройками */
+        .settings {
+            display: none; /* Скрываем блок по умолчанию */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        /* Всплывающее окно для входа */
+        .login-popup {
+            text-align: center;
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            z-index: 1000;
+        }
+
+        .login-popup input, .login-popup button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .login-popup button {
+            background-color: #27ae60;
+            color: white;
+            cursor: pointer;
+        }
+
+        .login-popup button:hover {
+            background-color: #2ecc71;
+        }
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Затемнение позади окна */
+}
+
+.popup {
+    display: none; /* По умолчанию скрыто */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 1000; /* Перед затемнением */
+    width: 300px;
+}
+
+         /* Стили для синего фона кнопок */
+.btn-blue {
+    background-color: #007BFF; /* Синий цвет */
+    color: #ffffff; /* Белый цвет текста */
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    border-radius: 5px; /* Скругление углов */
+    font-weight: bold; /* Жирный текст */
+    display: inline-block; /* Чтобы элемент вел себя как кнопка */
+    transition: background-color 0.3s ease; /* Анимация при наведении */
+        }
+
+.btn-blue:hover {
+    background-color: #0056b3; /* Темно-синий цвет при наведении */
+        }
+       .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+        .menu-icon {
+            font-size: 36px; /* Увеличение размера иконки */
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .menu-icon:hover {
+            color: #27ae60;
+        }
+
+        .settings.show {
+            display: flex;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+        }
+
+        .settings ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            display: block;
+            margin: 5px 0;
+            font-size: 32px;
+        }
+
+        .settings ul li a:hover {
+            background-color: #f1f1f1;
+            color: #27ae60;
+        }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        z-index: 1000;
+        width: 300px;
+    }
+
+    .popup h2 {
+        text-align: center;
+    }
+
+    .popup form input {
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .popup form button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .popup form button:hover {
+        background-color: #0056b3;
+    }
+
+    #closePopup {
+        display: block;
+        margin: 10px auto;
+        background-color: red;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+    #closePopup:hover {
+        background-color: darkred;
+    }
+
+    #openPopup {
+    pointer-events: auto; /* убедитесь, что кнопка доступна для кликов */
+}
+
+#overlayRegister {
+    display: none; /* убедитесь, что фон не видим по умолчанию */
+}
+
+/* Стили для окна регистрации */
+.popup h2 {
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.popup form input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.popup form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #27ae60; /* Зелёный цвет */
+    color: white;
+    font-size: 16px;
+    font-weight: normal;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.popup form button:hover {
+    background-color: #2ecc71; /* Более яркий зелёный */
+}
+
+#closePopupRegister {
+    width: 100%;
+    margin-top: 10px;
+    background-color: red; /* Красный цвет */
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: normal;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#closePopupRegister:hover {
+    background-color: #c0392b; /* Более насыщенный красный */
+}
+
+        /* Всплывающее окно для заявки */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .popup h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .popup input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px; /* Отступ снизу для полей ввода */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .popup button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px; /* Отступ сверху для кнопки */
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #2ecc71;
+        }
+
+        #closePopup {
+            background-color: red;
+            margin-top: 10px;
+        }
+
+        #closePopup:hover {
+            background-color: darkred;
+        }
+
+    <!-- Категории -->
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category {
+    background-color: #fffbea;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100px;
+}
+
+.category-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.category-title {
+    font-size: 16px;
+    color: #333;
+}
+
+
+        p {
+            line-height: 1.6;
+        }
+    .breadcrumb {
+      padding: 10px;
+      background-color: #f1f1f1;
+      font-size: 14px;
+    }
+    .breadcrumb a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    .container {
+      display: flex;
+      margin: 20px;
+    }
+    .sidebar {
+      width: 25%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar h4 {
+      margin-bottom: 10px;
+    }
+    .sidebar label {
+      display: block;
+      margin-top: 10px;
+    }
+    .sidebar input,
+    .sidebar select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .sidebar button {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .sidebar .reset-button {
+      background-color: #dc3545;
+    }
+    .content {
+      width: 75%;
+      margin-left: 20px;
+    }
+    .content h2 {
+      margin-bottom: 20px;
+    }
+    .item {
+      display: flex;
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .item img {
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-right: 15px;
+    }
+    .item-details {
+      flex: 1;
+    }
+    .item-details h4 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .item-details p {
+      margin: 5px 0;
+      color: #666;
+    }
+    .item-details .price {
+      font-size: 16px;
+      color: #28a745;
+      font-weight: bold;
+    }
+    .contact-button {
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      align-self: flex-start;
+    }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Верхнее меню -->
+    <header>
+     <div class="left">
+        <div class="logo">
+            <img src="Cukur1.png" alt="Лого">
+            <span></span>
+        </div>
+
+    <!-- Иконка гамбургер-меню -->
+    <a href="#" id="settingsBtn" class="menu-icon">&#9776;</a> 
+     
+    </div>
+    <div class="right">
+        <a href="#" id="loginBtn" class="btn-blue">Войти</a>
+        <a href="#" id="openRegistrationPopup" class="btn-blue">Регистрация</a>
+         <button id="applicationButton">Заявка</button>
+     </div>
+    </header>
+
+<!-- Всплывающее окно для входа -->
+<div class="overlay" id="overlayLogin"></div>
+<div class="login-popup" id="loginPopup">
+    <h2>Войти</h2>
+    <form action="ваш_путь_для_отправки_данных" method="POST" target="_self">
+        <input type="text" placeholder="Логин" name="username">
+        <input type="password" placeholder="Пароль" name="password">
+        <button type="submit" id="loginSubmit">Войти</button>
+    </form>
+    <button id="closePopup">Закрыть</button>
+</div>
+
+
+<!-- Всплывающее окно для регистрации -->
+
+<div class="overlay" id="overlayRegister"></div>
+<div class="popup" id="registrationPopup">
+    <h2>Регистрация</h2>
+    <form>
+        <input type="text" placeholder="Имя" required>
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Пароль" required>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    <button id="closePopupRegister">Закрыть</button>
+</div>
+
+    <!-- Всплывающее окно для заявки -->
+    <div class="overlay" id="applicationOverlay"></div>
+    <div class="popup" id="applicationPopup">
+        <h2>Войдите в свой аккаунт</h2>
+        <form>
+            <input type="text" placeholder="Логин" required>
+            <input type="password" placeholder="Пароль" required>
+            <button type="submit">Подтвердить</button>
+        </form>
+        <button id="closeApplicationPopup">Закрыть</button>
+    </div>
+
+
+    <!-- Блок с настройками -->
+    <div class="settings" id="settingsBlock">
+        <h2>Настройки</h2>
+    </div>
+
+    <!-- Слайдер с изображениями -->
+    <div class="slider">
+        <div class="slides" id="slides">
+            <img src="veshy.jpg" alt="Картинка 1">
+        </div>
+    </div>
+
+
+    <!-- Поисковая строка -->
+    <div class="search-bar">
+        <select>
+            <option>Все категории</option>
+            <option>Транспорт</option>
+            <option>Недвижимость</option>
+            <option>Работа</option>
+            <option>Услуги</option>
+            <option>Животные</option>
+            <option>Дом и сад</option>
+            <option>Спорт и хобби</option>
+
+        </select>
+   
+        <input type="text" placeholder="Введите описание...">
+        <button>Поиск</button>
+    </div>
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="#">Newstr</a> > <a href="#">Категории</a> > <a href="#">Личные вещи</a> > <span>Личные вещи - Кыргызстан</span>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h4>Фильтры</h4>
+      <label>Цена:</label>
+      <div style="display: flex; gap: 10px;">
+        <select>
+          <option value="KGS">KGS</option>
+          <option value="USD">USD</option>
+        </select>
+      </div>
+      <label>Цена от:</label>
+      <input type="number" placeholder="Минимальная цена">
+      <label>Цена до:</label>
+      <input type="number" placeholder="Максимальная цена">
+      <button>Показать результаты</button>
+      <button class="reset-button">Сбросить фильтр</button>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <h2>Работа - Кыргызстан</h2>
+
+      <!-- Item 1 -->
+      <div class="item">
+        <img src="Platya.jpg" alt="Няня" width="160" height="120">
+        <div class="item-details">
+          <h6>Платья</h6> 
+          <h4>Повседневное платье, Made in KG, Зима, Короткая модель, M (EU 38)...</h4>
+          <p>Бишкек</p>
+          <p class="price">35 000 KGS</p>
+        </div>
+        <button class="contact-button">Связаться</button>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="item">
+        <img src="Platya1.jpg" alt="Переводчик" width="160" height="120">
+        <div class="item-details">
+          <h6>Платья</h6>
+          <h4>Роскошные вечерние платья с бусинами для женщин, черные длинные рукава длиной до пола,...</h4>
+          <p>Бишкек</p>
+          <p class="price">55 000 KGS</p>
+        </div>
+        <button class="contact-button">Связаться</button>
+      </div>
+    </div>
+  </div>
+
+ <script>
+
+    // Переменные для настроек
+        const settingsBtn = document.getElementById('settingsBtn');
+        settingsBtn.addEventListener('click', function(event) {
+            event.preventDefault(); // Отключаем стандартное поведение ссылки
+            window.open('settingburger.html','_self'); // Переход на новую страницу
+        });
+
+
+// Переменные для окна входа
+const loginBtn = document.getElementById('loginBtn');
+const loginPopup = document.getElementById('loginPopup');
+const overlayLogin = document.getElementById('overlayLogin');
+const closeLoginPopup = document.getElementById('closePopup');
+
+// Переменные для окна регистрации
+const openRegistrationPopup = document.getElementById('openRegistrationPopup'); // Кнопка открытия регистрации
+const registrationPopup = document.getElementById('registrationPopup'); // Всплывающее окно регистрации
+const overlayRegister = document.getElementById('overlayRegister'); // Затемнение для окна регистрации
+const closeRegistrationPopup = document.getElementById('closePopupRegister'); // Кнопка закрытия регистрации
+
+    // Обработчик события для кнопки настроек
+    settingsBtn.addEventListener('click', () => {
+        settingsBlock.style.display = (settingsBlock.style.display === 'none' || settingsBlock.style.display === '') ? 'block' : 'none';
+    });
+
+    // Открытие всплывающего окна для входа
+loginBtn.addEventListener('click', () => {
+    loginPopup.style.display = 'block';
+    overlayLogin.style.display = 'block';
+});
+
+// Закрытие всплывающего окна для входа
+closeLoginPopup.addEventListener('click', () => {
+    loginPopup.style.display = 'none';
+    overlayLogin.style.display = 'none';
+});
+// Закрытие окна входа при клике на затемненную область
+overlayLogin.addEventListener('click', () => {
+    loginPopup.style.display = 'none';
+    overlayLogin.style.display = 'none';
+});    
+// Открытие всплывающего окна регистрации
+openRegistrationPopup.addEventListener('click', () => {
+    registrationPopup.style.display = 'block';
+    overlayRegister.style.display = 'block';
+});
+
+// Закрытие всплывающего окна регистрации
+closeRegistrationPopup.addEventListener('click', () => {
+    registrationPopup.style.display = 'none';
+    overlayRegister.style.display = 'none';
+});
+
+// Закрытие окна регистрации при клике на overlay
+overlayRegister.addEventListener('click', () => {
+    registrationPopup.style.display = 'none';
+    overlayRegister.style.display = 'none';
+});
+
+        // Элементы всплывающего окна для заявки
+        const applicationButton = document.getElementById('applicationButton');
+        const applicationPopup = document.getElementById('applicationPopup');
+        const applicationOverlay = document.getElementById('applicationOverlay');
+        const closeApplicationPopup = document.getElementById('closeApplicationPopup');
+
+        // Открыть всплывающее окно
+        applicationButton.addEventListener('click', () => {
+            applicationPopup.style.display = 'block';
+            applicationOverlay.style.display = 'block';
+        });
+
+        // Закрыть всплывающее окно по кнопке
+        closeApplicationPopup.addEventListener('click', () => {
+            applicationPopup.style.display = 'none';
+            applicationOverlay.style.display = 'none';
+        });
+
+        // Закрыть всплывающее окно по клику на затемненную область
+        applicationOverlay.addEventListener('click', () => {
+            applicationPopup.style.display = 'none';
+            applicationOverlay.style.display = 'none';
+        });
+
+</script>
+
+    <footer>
+        <p>© 2024 Павел Сабиров | Все права защищены</p>
+    </footer>
+
+</body>
+</html>
